@@ -1,0 +1,87 @@
+int hloubkaStromu(Zak* strom){
+    if(strom = nullptr){
+        return 0;
+    }else {
+        int pocL= hloubkaStromu(strom->levy);
+        int pocP = hloubkaStromu(strom->pravy);
+        if(pocP>pocL){
+            return pocP+1;
+        }else{
+            return pocL+1;
+        }
+    }
+}
+void textToBinary(string vstup,string vystup){
+    ifstream in(vstup);
+    ofstream out(vystup,ios::out| ios::binary);
+    if(in.is_open() and out.is_open()){
+        int cislo;
+        while(in>>cislo){
+            out.write((char *) &cislo,sizeof(int));
+        }
+        in.close();
+        out.close();
+    }
+}
+void binaryToArray(Tpole pole,string soubor,int &pocet){
+    ifstream in(soubor,ios::in | ios::binary);
+    if(in.is_open()){
+        while(!in.eof()){
+            in.read((char *) &pole[pocet++],sizeof(int));
+
+        }
+        in.close();
+    }
+}
+void vypisPole(Tpole pole,int pocet){
+    for(int i=0;i<pocet;i++){
+        cout<<pole[i]<<", ";
+    }
+}
+void naplnPole(Tpole pole,int pocet,int max){
+    for(int i=0;i<pocet;i++){
+        pole[i]=rand() % (max+1);
+    }
+}
+void bubbleSort(int* array,int size){
+    for(int i = 0; i < size - 1; i++){
+        for(int j = 0; j < size - i - 1; j++){
+            if(array[j+1] < array[j]){
+                int tmp = array[j + 1];
+                array[j + 1] = array[j];
+                array[j] = tmp;
+            }
+        }
+    }
+}
+void setSort(Tmnozina mn,Tpole pole,int pocet){
+    for(int i=0;i<=maxHodnota;i++){
+        mn[i]=0;
+    }
+    for(int i=0;i<=pocet;i++){
+        mn[pole[i]]++;
+    }
+}
+void vypisMnozinu(Tmnozina mn){
+    for(int i=0;i<=maxHodnota;i++){
+        for(int j=0;j<=mn[i];j++){
+            cout<< i <<", ";
+        }
+    }
+}
+
+int main(){
+    //textToBinary("cisla.txt","cisla.dat");
+    Tpole tpole;
+    Tmnozina m;
+    int pocet=0;
+   // binaryToArray(tpole,"cisla.dat",pocet);
+    naplnPole(tpole,pocet,maxHodnota);
+    setSort(m,tpole,pocet);
+    bubbleSort(tpole,pocet);
+    vypisPole(tpole,pocet);
+    cout<<endl<<"----------------------------"<<endl;
+    vypisMnozinu(m);
+
+    return 0;
+}
